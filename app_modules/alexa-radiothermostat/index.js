@@ -7,19 +7,24 @@ var thermostatApp = new alexa.app('thermostat');
 thermostatApp.intent('setTemp', function(req, res) {
 	var setToTemp = req.slot('setTemperature');
 	var setToMode = req.slot('setMode');
+	var txtResponse = ""
 	switch(setToMode){
-		case "Heat": // HEAT
+		case "heat": // HEAT
 			request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_heat: parseFloat(setToTemp)}});
+			txtResponse = "Thermostat is set to " + setToMode + " and the temperture is set to " + parseInt(setToTemp) + " degrees"
 			break;
-		case "AC": case "Cold": case "Cool": // COOL
+		case "AC": case "cold": case "cool": // COOL
 			request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_cool: parseFloat(setToTemp)}});
+			txtResponse = "Thermostat is set to " + setToMode + " and the temperture is set to " + parseInt(setToTemp) + " degrees"
 			break;
 		case "undefined":
+			txtResponse = "landed on undefined"
 			break;
 		default:
+			txtResponse = "Something went wrong please try again."
 	}	
-	res.card("Thermostat Skill","Thermostat is set to " + setToMode + " and the temperture is set to " + parseInt(setToTemp) + " degrees");
-	res.say("Thermostat is set to " + setToMode + " and the temperture is set to " + parseInt(setToTemp) + " degrees");
+	res.card("Thermostat Skill",txtResponse);
+	res.say(txtResponse);
 });
 
 // process get temperature request
