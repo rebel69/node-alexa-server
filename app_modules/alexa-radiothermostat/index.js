@@ -22,11 +22,11 @@ thermostatApp.intent('getTemp', function(req, res) {
 			res.card("Thermostat Skill","Thermostat current temperature is " + body.temp + " degrees, the thermostat is currently turned off.");
 			break;
 		case 1: // HEAT
-			res.say("Thermostat current temperature is " + body.temp + " degrees, the target temperature is " + body.t_heat + " degrees.");
+			res.say("Thermostat current temperature is " + body.temp + " degrees, the thermostat is set to heat and the target temperature is " + body.t_heat + " degrees.");
 			res.card("Thermostat Skill","Thermostat current temperature is " + body.temp + " degrees, the thermostat is set to heat and the target temperature is " + body.t_heat + " degrees.");
 			break;
 		case 2: // COOL
-			res.say("Thermostat current temperature is " + body.temp + " degrees, the target temperature is " + body.t_cool + " degrees.");
+			res.say("Thermostat current temperature is " + body.temp + " degrees, the thermostat is set to cool and the target temperature is " + body.t_cool + " degrees.");
 			res.card("Thermostat Skill","Thermostat current temperature is " + body.temp + " degrees, the thermostat is set to cool and the target temperature is " + body.t_cool + " degrees.");
 			break;
 		case 3: // AUTO
