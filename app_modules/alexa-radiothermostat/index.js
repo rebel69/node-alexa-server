@@ -5,7 +5,8 @@ var alexa = require('alexa-app');
 var thermostatApp = new alexa.app('thermostat');
 
 thermostatApp.intent('setState', function(req, res) {
-
+	res.say("setState");
+	res.card("Thermostat Skill","setState");
 });
 
 thermostatApp.intent('setTemp', function(req, res) {
