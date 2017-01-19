@@ -5,24 +5,23 @@ var alexa = require('alexa-app');
 var thermostatApp = new alexa.app('thermostat');
 
 thermostatApp.intent('setTemp', function(req, res) {
+  request(process.env.THERMOSTAT_URL + '/tstat', function (error, response, body) {
+    console.log('Error: ' + error, 'RESPONSE: ' + response, 'BODY: ' + body);
+    body = JSON.parse(body);
 	var setToTemp = req.slot('setTemperature');
 	var setToMode = req.slot('setMode');
-	var txtSetResponse = ""
+	var txtSetResponse = "The thermostat's current temperature is " + body.temp + " degrees, ";
 	switch(setToMode){
 		case "heat": case "hot": case "warm": // HEAT
 			request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_heat: parseFloat(setToTemp)}});
-			txtSetResponse = "Thermostat is set to heat and the temperture is set to " + parseInt(setToTemp) + " degrees";
+			txtSetResponse = txtSetResponse + "the thermostat is set to heat and the temperture is set to " + parseInt(setToTemp) + " degrees";
 			break;
 		case "AC": case "cold": case "cool": case "air conditioner": // COOL
 			request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_cool: parseFloat(setToTemp)}});
-			txtSetResponse = "Thermostat is set to air conditioner and the temperture is set to " + parseInt(setToTemp) + " degrees";
+			txtSetResponse = txtSetResponse + "the thermostat is set to air conditioner and the temperture is set to " + parseInt(setToTemp) + " degrees";
 			break;
 		case undefined: // The mode wasn't specified so I get the current mode and update just the temp and leave the mode the same
-			request(process.env.THERMOSTAT_URL + '/tstat', function (error, response, body) {
-				console.log('Error: ' + error, 'RESPONSE: ' + response, 'BODY: ' + body);
-				body = JSON.parse(body);
-			});
-			return false;
+
 			txtSetResponse = "landed on undefined";
 			break;
 		default:
@@ -30,6 +29,8 @@ thermostatApp.intent('setTemp', function(req, res) {
 	}	
 	res.say(txtSetResponse);
 	res.card("Thermostat Skill",txtSetResponse);
+  });
+  return false;
 });
 
 // process get temperature request
