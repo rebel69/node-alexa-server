@@ -5,7 +5,7 @@ var alexa = require('alexa-app');
 var thermostatApp = new alexa.app('thermostat');
 
 thermostatApp.intent('setTemp', function(req, res) {
-	//var setToTemp = req.slot('setTemperature');
+	var setToTemp = req.slot('setTemperature');
 	//var setToMode = req.slot('setMode');
 	request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_heat: parseFloat(req.slot('setTemperature'))}});
 	res.card("Thermostat Skill","Thermostat is set to " + parseInt(req.slot('setTemperature')) + " degrees");
