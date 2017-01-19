@@ -21,14 +21,15 @@ thermostatApp.intent('setTemp', function(req, res) {
 			request(process.env.THERMOSTAT_URL + '/tstat', function (error, response, body) {
 				console.log('Error: ' + error, 'RESPONSE: ' + response, 'BODY: ' + body);
 				body = JSON.parse(body);
-			}
+			});
+			return false;
 			txtSetResponse = "landed on undefined";
 			break;
 		default:
 			txtSetResponse = "Something went wrong please try again.";
 	}	
-	res.card("Thermostat Skill",txtSetResponse);
 	res.say(txtSetResponse);
+	res.card("Thermostat Skill",txtSetResponse);
 });
 
 // process get temperature request
