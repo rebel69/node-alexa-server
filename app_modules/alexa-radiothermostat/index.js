@@ -9,7 +9,7 @@ thermostatApp.intent('setTemp', function(req, res) {
 	var setToMode = req.slot('setMode');
 	request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_heat: parseFloat(setToTemp)}});
 	res.card("Thermostat Skill","Thermostat is set to " + parseInt(setToTemp) + " degrees");
-	res.say("Thermostat is set to " + parseInt(setToTemp) + " degrees");
+	res.say("Thermostat is set to " + parseInt(setToTemp) + " degrees" + setToMode);
 });
 
 // process get temperature request
