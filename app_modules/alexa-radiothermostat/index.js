@@ -7,24 +7,24 @@ var thermostatApp = new alexa.app('thermostat');
 thermostatApp.intent('setTemp', function(req, res) {
 	var setToTemp = req.slot('setTemperature');
 	var setToMode = req.slot('setMode');
-	var txtResponse = ""
+	var txtSetResponse = ""
 	switch(setToMode){
-		case "heat": // HEAT
+		case "heat": case "hot": case "warm": // HEAT
 			request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_heat: parseFloat(setToTemp)}});
-			txtResponse = "Thermostat is set to heat and the temperture is set to " + parseInt(setToTemp) + " degrees"
+			txtSetResponse = "Thermostat is set to heat and the temperture is set to " + parseInt(setToTemp) + " degrees";
 			break;
-		case "AC": case "cold": case "cool": // COOL
+		case "AC": case "cold": case "cool": case "air conditioner": // COOL
 			request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_cool: parseFloat(setToTemp)}});
-			txtResponse = "Thermostat is set to air conditioner and the temperture is set to " + parseInt(setToTemp) + " degrees"
+			txtSetResponse = "Thermostat is set to air conditioner and the temperture is set to " + parseInt(setToTemp) + " degrees";
 			break;
-		case undefined:
-			txtResponse = "landed on undefined"
+		case undefined: // The mode wasn't specified so I get the current mode and update just the temp and leave the mode the same
+			txtSetResponse = "landed on undefined";
 			break;
 		default:
-			txtResponse = "Something went wrong please try again."
+			txtSetResponse = "Something went wrong please try again.";
 	}	
-	res.card("Thermostat Skill",txtResponse);
-	res.say(txtResponse);
+	res.card("Thermostat Skill",txtSetResponse);
+	res.say(txtSetResponse);
 });
 
 // process get temperature request
@@ -33,29 +33,27 @@ thermostatApp.intent('getTemp', function(req, res) {
   request(process.env.THERMOSTAT_URL + '/tstat', function (error, response, body) {
     console.log('Error: ' + error, 'RESPONSE: ' + response, 'BODY: ' + body);
     body = JSON.parse(body);
+	var txtGetResponse = ""
     switch(body.tmode){
 		case 0: // OFF
-			res.say("Thermostat current temperature is " + body.temp + " degrees, the thermostat is currently turned off.");
-			res.card("Thermostat Skill","Thermostat current temperature is " + body.temp + " degrees, the thermostat is currently turned off.");
+			txtGetResponse = "Thermostat current temperature is " + body.temp + " degrees, the thermostat is currently turned off.";
 			break;
 		case 1: // HEAT
-			res.say("Thermostat current temperature is " + body.temp + " degrees, the thermostat is set to heat and the target temperature is " + body.t_heat + " degrees.");
-			res.card("Thermostat Skill","Thermostat current temperature is " + body.temp + " degrees, the thermostat is set to heat and the target temperature is " + body.t_heat + " degrees.");
+			txtGetResponse = "Thermostat current temperature is " + body.temp + " degrees, the thermostat is set to heat and the target temperature is " + body.t_heat + " degrees.";
 			break;
 		case 2: // COOL
-			res.say("Thermostat current temperature is " + body.temp + " degrees, the thermostat is set to cool and the target temperature is " + body.t_cool + " degrees.");
-			res.card("Thermostat Skill","Thermostat current temperature is " + body.temp + " degrees, the thermostat is set to cool and the target temperature is " + body.t_cool + " degrees.");
+			txtGetResponse = "Thermostat current temperature is " + body.temp + " degrees, the thermostat is set to cool and the target temperature is " + body.t_cool + " degrees.";
 			break;
 		case 3: // AUTO
-			res.say("Thermostat current temperature is " + body.temp + " degrees, the thermostat is currently turned auto.");
-			res.card("Thermostat Skill","Thermostat current temperature is " + body.temp + " degrees, the thermostat is currently turned auto.");
+			txtGetResponse = "Thermostat current temperature is " + body.temp + " degrees, the thermostat is currently turned auto.";
 			break;
 		default:
-			res.say("Something went wrong please try again.");
-			res.card("Something went wrong please try again.");
+			txtGetResponse = "Something went wrong please try again.";
 			break;
 	}
-    res.send();
+    res.say(txtGetResponse);
+	res.card("Thermostat Skill",txtGetResponse);
+	res.send();
   });
   return false;
 });
