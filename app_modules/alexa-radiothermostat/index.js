@@ -33,19 +33,19 @@ thermostatApp.intent('getTemp', function(req, res) {
   request(process.env.THERMOSTAT_URL + '/tstat', function (error, response, body) {
     console.log('Error: ' + error, 'RESPONSE: ' + response, 'BODY: ' + body);
     body = JSON.parse(body);
-	var txtGetResponse = ""
+	var txtGetResponse = "The thermostat's current temperature is " + body.temp + " degrees, ";
     switch(body.tmode){
 		case 0: // OFF
-			txtGetResponse = "Thermostat current temperature is " + body.temp + " degrees, the thermostat is currently turned off.";
+			txtGetResponse = txtGetResponse + "the thermostat is currently turned off.";
 			break;
 		case 1: // HEAT
-			txtGetResponse = "Thermostat current temperature is " + body.temp + " degrees, the thermostat is set to heat and the target temperature is " + body.t_heat + " degrees.";
+			txtGetResponse = txtGetResponse + "the thermostat is set to heat and the target temperature is " + body.t_heat + " degrees.";
 			break;
 		case 2: // COOL
-			txtGetResponse = "Thermostat current temperature is " + body.temp + " degrees, the thermostat is set to cool and the target temperature is " + body.t_cool + " degrees.";
+			txtGetResponse = txtGetResponse + "the thermostat is set to cool and the target temperature is " + body.t_cool + " degrees.";
 			break;
 		case 3: // AUTO
-			txtGetResponse = "Thermostat current temperature is " + body.temp + " degrees, the thermostat is currently turned auto.";
+			txtGetResponse = txtGetResponse + "the thermostat is currently turned auto.";
 			break;
 		default:
 			txtGetResponse = "Something went wrong please try again.";
