@@ -29,6 +29,7 @@ thermostatApp.intent('setTemp', function(req, res) {
 	}	
 	res.say(txtSetResponse);
 	res.card("Thermostat Skill",txtSetResponse);
+	res.send();
   });
   return false;
 });
