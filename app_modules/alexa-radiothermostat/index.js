@@ -10,7 +10,7 @@ thermostatApp.intent('setState', function(req, res) {
 		body = JSON.parse(body);
 		var setTheState = req.slot('setTheMode');
 		var txtSetStateResponse = "The thermostat's current temperature is " + body.temp + " degrees, ";
-		switch(setToMode){
+		switch(setTheState){
 			case "off": // OFF
 				request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {tmode: 0}});
 				txtSetStateResponse = txtSetStateResponse + "the thermostat is now turned off.";
