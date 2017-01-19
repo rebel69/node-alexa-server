@@ -4,6 +4,40 @@ var alexa = require('alexa-app');
 
 var thermostatApp = new alexa.app('thermostat');
 
+thermostatApp.intent('setState', function(req, res) {
+	request(process.env.THERMOSTAT_URL + '/tstat', function (error, response, body) {
+		console.log('Error: ' + error, 'RESPONSE: ' + response, 'BODY: ' + body);
+		body = JSON.parse(body);
+		var setTheState = req.slot('setTheMode');
+		var txtSetStateResponse = "The thermostat's current temperature is " + body.temp + " degrees, ";
+		switch(setToMode){
+			case "off": // OFF
+				request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {tmode: 0}});
+				txtSetStateResponse = txtSetStateResponse + "the thermostat is now turned off.";
+				break;
+			case "heat": case "hot": case "warm": // HEAT
+				request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {tmode: 1}});
+				txtSetStateResponse = txtSetStateResponse + "the thermostat is now turned on to heat.";
+				break;
+			case "AC": case "cold": case "cool": case "air conditioner": // COOL
+				request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {tmode: 2}});
+				txtSetStateResponse = txtSetStateResponse + "the thermostat is now turned on to air conditioner.";
+				break;
+			case "auto": case "automatic": // AUTO
+				request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {tmode: 3}});
+				txtSetStateResponse = txtSetStateResponse + "the thermostat is now turned on to auto.";
+				break;
+			default:
+				txtSetResponse = "Something went wrong please try again.";
+				break;
+		}
+		res.say(txtSetStateResponse);
+	res.card("Thermostat Skill",txtSetStateResponse);
+	res.send();
+	});
+  return false;
+});
+
 thermostatApp.intent('setTemp', function(req, res) {
   request(process.env.THERMOSTAT_URL + '/tstat', function (error, response, body) {
     console.log('Error: ' + error, 'RESPONSE: ' + response, 'BODY: ' + body);
