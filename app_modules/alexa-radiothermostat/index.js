@@ -31,7 +31,7 @@ thermostatApp.intent('setState', function(req, res) {
 				txtSetResponse = "Something went wrong please try again.";
 				break;
 		}
-		res.say(txtSetStateResponse);
+	res.say(txtSetStateResponse);
 	res.card("Thermostat Skill",txtSetStateResponse);
 	res.send();
 	});
@@ -45,39 +45,7 @@ thermostatApp.intent('setTemp', function(req, res) {
 	var setToTemp = req.slot('setTemperature');
 	var setToMode = req.slot('setMode');
 	var txtSetResponse = "The thermostat's current temperature is " + body.temp + " degrees, ";
-	switch(setToMode){
-		case "heat": case "hot": case "warm": // HEAT
-			request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_heat: parseFloat(setToTemp)}});
-			txtSetResponse = txtSetResponse + "the thermostat is set to heat and the temperture is set to " + parseInt(setToTemp) + " degrees.";
-			break;
-		case "AC": case "cold": case "cool": case "air conditioner": // COOL
-			request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_cool: parseFloat(setToTemp)}});
-			txtSetResponse = txtSetResponse + "the thermostat is set to air conditioner and the temperture is set to " + parseInt(setToTemp) + " degrees.";
-			break;
-		case undefined: // The mode wasn't specified so I get the current mode and update just the temp and leave the mode the same
-			switch(body.tmode){
-				case 0: // OFF
-					txtSetResponse = txtSetResponse + "the thermostat is currently turned off, please turn it on to change the temperture.";
-					break;
-				case 1: // HEAT
-					request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_heat: parseFloat(setToTemp)}});
-					txtSetResponse = txtSetResponse + "the thermostat is set to heat mode and the temperture is set to " + parseInt(setToTemp) + " degrees.";
-					break;
-				case 2: // COOL
-					request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_cool: parseFloat(setToTemp)}});
-					txtSetResponse = txtSetResponse + "the thermostat is set to air conditioner mode and the temperture is set to " + parseInt(setToTemp) + " degrees.";
-					break;
-				case 3: // AUTO
-					txtSetResponse = txtSetResponse + "this command can not be completed because the thermostat is currently set to auto mode.";
-					break;
-				default:
-					txtSetResponse = "Something went wrong please try again.";
-					break;
-			}
-			break;
-		default:
-			txtSetResponse = "Something went wrong please try again.";
-	}	
+
 	res.say(txtSetResponse);
 	res.card("Thermostat Skill",txtSetResponse);
 	res.send();
