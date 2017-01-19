@@ -18,6 +18,10 @@ thermostatApp.intent('setTemp', function(req, res) {
 			txtSetResponse = "Thermostat is set to air conditioner and the temperture is set to " + parseInt(setToTemp) + " degrees";
 			break;
 		case undefined: // The mode wasn't specified so I get the current mode and update just the temp and leave the mode the same
+			request(process.env.THERMOSTAT_URL + '/tstat', function (error, response, body) {
+				console.log('Error: ' + error, 'RESPONSE: ' + response, 'BODY: ' + body);
+				body = JSON.parse(body);
+			}
 			txtSetResponse = "landed on undefined";
 			break;
 		default:
