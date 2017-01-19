@@ -9,28 +9,15 @@ thermostatApp.intent('setTemp', function(req, res) {
 	var setToMode = req.slot('setMode');
 	switch(setToMode){
 		case "Heat": // HEAT
-		request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_heat: parseFloat(setToTemp)}});
-		break;
+			request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_heat: parseFloat(setToTemp)}});
+			break;
 		case "AC": case "Cold": case "Cool": // COOL
-		request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_cool: parseFloat(setToTemp)}});
-		break;
+			request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_cool: parseFloat(setToTemp)}});
+			break;
 		case "undefined":
-		request(process.env.THERMOSTAT_URL + '/tstat', function (error, response, body){
-			console.log('Error: ' + error, 'RESPONSE: ' + response, 'BODY: ' + body);
-			body = JSON.parse(body);
-			switch(body.tmode){
-				case 1: // HEAT
-				request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_heat: parseFloat(setToTemp)}});
-				setToMode = "Heat"
-				break;
-				case 2: // COOL
-				request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_cool: parseFloat(setToTemp)}});
-				setToMode = "AC"
-				break;
-			}
-		}
-		break;
-	}
+			break;
+		default:
+	}	
 	res.card("Thermostat Skill","Thermostat is set to " + setToMode + " and the temperture is set to " + parseInt(setToTemp) + " degrees");
 	res.say("Thermostat is set to " + setToMode + " and the temperture is set to " + parseInt(setToTemp) + " degrees");
 });
