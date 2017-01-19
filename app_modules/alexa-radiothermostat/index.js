@@ -11,13 +11,13 @@ thermostatApp.intent('setTemp', function(req, res) {
 	switch(setToMode){
 		case "heat": // HEAT
 			request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_heat: parseFloat(setToTemp)}});
-			txtResponse = "Thermostat is set to " + setToMode + " and the temperture is set to " + parseInt(setToTemp) + " degrees"
+			txtResponse = "Thermostat is set to heat and the temperture is set to " + parseInt(setToTemp) + " degrees"
 			break;
 		case "AC": case "cold": case "cool": // COOL
 			request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_cool: parseFloat(setToTemp)}});
-			txtResponse = "Thermostat is set to " + setToMode + " and the temperture is set to " + parseInt(setToTemp) + " degrees"
+			txtResponse = "Thermostat is set to air conditioner and the temperture is set to " + parseInt(setToTemp) + " degrees"
 			break;
-		case "undefined":
+		case undefined:
 			txtResponse = "landed on undefined"
 			break;
 		default:
