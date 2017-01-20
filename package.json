@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/rebel69/node-alexa-server.git"
   },
-  "author": "",
+  "author": "Michael Hollowell",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/rebel69/node-alexa-server/issues"
