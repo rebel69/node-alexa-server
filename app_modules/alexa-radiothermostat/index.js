@@ -14,11 +14,11 @@ thermostatApp.intent('setTemp', function(req, res) {
 	switch(setToMode){
 		case "heat": case "hot": case "warm": // HEAT
 			request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_heat: parseFloat(setToTemp)}});
-			txtSetResponse = txtSetResponse + "the thermostat is set to heat and the temperture is set to " + parseInt(setToTemp) + " degrees.";
+			txtSetResponse = txtSetResponse + "the thermostat is set to heat mode and the temperture is set to " + parseInt(setToTemp) + " degrees.";
 			break;
 		case "AC": case "cold": case "cool": case "air conditioner": // COOL
 			request.post(process.env.THERMOSTAT_URL + '/tstat', {json: {t_cool: parseFloat(setToTemp)}});
-			txtSetResponse = txtSetResponse + "the thermostat is set to air conditioner and the temperture is set to " + parseInt(setToTemp) + " degrees.";
+			txtSetResponse = txtSetResponse + "the thermostat is set to air conditioner mode and the temperture is set to " + parseInt(setToTemp) + " degrees.";
 			break;
 		case undefined: // The mode wasn't specified so I get the current mode and update just the temp and leave the mode the same
 			switch(body.tmode){
@@ -38,7 +38,6 @@ thermostatApp.intent('setTemp', function(req, res) {
 					break;
 				default:
 					txtSetResponse = "Something went wrong please try again.";
-					break;
 			}
 			break;
 		default:
@@ -73,7 +72,6 @@ thermostatApp.intent('getTemp', function(req, res) {
 			break;
 		default:
 			txtGetResponse = "Something went wrong please try again.";
-			break;
 	}
     res.say(txtGetResponse);
 	res.card("Thermostat Skill",txtGetResponse);
